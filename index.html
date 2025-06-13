@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarambh 2025-26 - Class 9 Admin Dashboard</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e6f0ff 0%, #a1c4fd 100%);
+            color: #333;
+        }
+
+        /* Navigation Menu */
+        nav {
+            background-color: #2c3e50;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo img {
+            max-width: 150px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a, .admin-login-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .admin-login-btn:hover {
+            color: #3498db;
+        }
+
+        .admin-login-btn {
+            padding: 8px 15px;
+            background-color: #e74c3c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Mobile Navigation */
+        .nav-toggle {
+            display: none;
+            font-size: 1.5em;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #2c3e50;
+                padding: 20px;
+                box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-logo img {
+                max-width: 120px;
+            }
+
+            .admin-login-btn {
+                font-size: 0.9em;
+                padding: 6px 12px;
+            }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .logo img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .batch-photo {
+            max-width: 400px;
+            margin-top: 40px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            h3 {
+                font-size: 1.2em;
+            }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+            .batch-photo {
+                max-width: 100%;
+            }
+        }
+
+        section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Admin Login Pop-up */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            animation: pop 0.5s ease forwards;
+            position: relative;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #e74c3c;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .modal-content button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .control-panel form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-panel label {
+            font-weight: bold;
+        }
+
+        .control-panel input, 
+        .control-panel select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .control-panel button {
+            padding: 10px;
+            background-color: #2ecc71;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .control-panel button:hover {
+            background-color: #27ae60;
+        }
+
+        #batchList {
+            margin-top: 20px;
+        }
+
+        .batch-item {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        /* Lecture Section */
+        .lecture-list .subjects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .subject-item, .chapter-container {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .subject-item:hover, .chapter-container:hover {
+            transform: translateY(-5px);
+            background-color: #f0f0f0;
+        }
+
+        .chapter-details {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .chapter-details p {
+            margin: 5px 0;
+        }
+
+        .chapter-details a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .chapter-details a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .lecture-list .subjects {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .subject-item, .chapter-container {
+                padding: 10px;
+            }
+        }
+
+        /* Let's Study and Resources */
+        .subject-chapters, .subject-resources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .subject-container {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .chapter-item, .resource-item {
+            margin: 10px 0;
+        }
+
+        .chapter-item p {
+            margin: 5px 0;
+        }
+
+        .chapter-item a, .resource-item a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .chapter-item a:hover, .resource-item a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .subject-chapters, .subject-resources {
+                grid-template-columns: 1fr;
+            }
+
+            .subject-container {
+                padding: 10px;
+            }
+        }
+
+        /* Links Section */
+        .links a {
+            display: block;
+            margin: 10px 0;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .links a {
+                font-size: 1em;
+            }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-logo" data-aos="fade-right">
+            <img src="https://i.supaimg.com/ec806628-9ded-4425-892c-bd036714ab99.png" alt="Next Toppers Logo">
+        </div>
+        <div class="nav-toggle" onclick="toggleNav()">☰</div>
+        <div class="nav-links">
+            <a href="#home" data-aos="fade-down" data-aos-delay="100">Home</a>
+            <a href="#lectures" data-aos="fade-down" data-aos-delay="200">Lectures</a>
+            <a href="#study" data-aos="fade-down" data-aos-delay="300">Let's Study</a>
+            <a href="#resources" data-aos="fade-down" data-aos-delay="400">Notes & DPP</a>
+            <a href="mailto:murlikumar097@gmail.com" data-aos="fade-down" data-aos-delay="500">Contact</a>
+            <button class="admin-login-btn" onclick="showLoginModal()" data-aos="fade-down" data-aos-delay="600">Admin Login</button>
+        </div>
+    </nav>
+
+    <!-- Admin Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content" data-aos="zoom-in">
+            <span class="close-btn" onclick="closeLoginModal()">×</span>
+            <h2>Admin Login</h2>
+            <form id="adminLoginForm">
+                <input type="text" id="adminId" placeholder="Admin ID" required>
+                <input type="password" id="adminPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <header id="home">
+        <div class="logo" data-aos="fade-up">
+            <img src="https://i.supaimg.com/ec806628-9ded-4425-892c-bd036714ab99.png" alt="Next Toppers Logo">
+        </div>
+        <h1 data-aos="fade-down">Aarambh 2025-26</h1>
+        <p data-aos="fade-up" data-aos-delay="200">Class 9 CBSE - A Comprehensive Learning Solution</p>
+        <img class="batch-photo" src="https://i.supaimg.com/b724213b-ab0b-4954-90a3-56e42c8af6e4.png" alt="Aarambh Batch Photo" data-aos="zoom-in" data-aos-delay="300">
+    </header>
+
+    <!-- Admin Control Panel -->
+    <section id="controlPanel" class="control-panel">
+        <h2 data-aos="fade-right">Control Panel</h2>
+        <div id="batchManager" data-aos="fade-up">
+            <h3>Manage Batches</h3>
+            <form id="batchForm">
+                <label for="batchName">Batch Name:</label>
+                <input type="text" id="batchName" required>
+                <label for="batchYear">Batch Year:</label>
+                <input type="text" id="batchYear" placeholder="e.g., 2025-26" required>
+                <button type="submit">Add Batch</button>
+            </form>
+            <div id="batchList"></div>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="100">
+            <h3>Upload a Lecture</h3>
+            <form id="lectureForm">
+                <label for="lectureTitle">Lecture Title:</label>
+                <input type="text" id="lectureTitle" name="lectureTitle" required>
+                <label for="chapterName">Chapter Name:</label>
+                <input type="text" id="chapterName" name="chapterName" required>
+                <label for="subject">Subject:</label>
+                <select id="subject" name="subject" required>
+                    <option value="Science">Science</option>
+                    <option value="Social Science">Social Science</option>
+                    <option value="Maths">Maths</option>
+                    <option value="Hindi Course B">Hindi Course B</option>
+                    <option value="Hindi Course A">Hindi Course A</option>
+                    <option value="Communicative Eng (A)">Communicative Eng (A)</option>
+                    <option value="Eng Lang & Lit (B)">Eng Lang & Lit (B)</option>
+                    <option value="Artificial Intelligence">Artificial Intelligence</option>
+                    <option value="Information Technology">Information Technology</option>
+                    <option value="Sanskrit">Sanskrit</option>
+                </select>
+                <label for="lectureFile">Upload File (Video/PDF):</label>
+                <input type="file" id="lectureFile" name="lectureFile" accept="video/*,application/pdf" required>
+                <button type="submit">Upload Lecture</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="lectures" class="lecture-list" data-aos="fade-left">
+        <h2 data-aos="fade-right">Lectures by Subject</h2>
+        <div id="lecturesContainer" class="subjects"></div>
+        <div id="chaptersContainer"></div>
+    </section>
+
+    <section id="study" class="study-section" data-aos="fade-right">
+        <h2 data-aos="fade-left">Let's Study</h2>
+        <div class="subject-chapters">
+            <div class="subject-container" data-aos="fade-up">
+                <h3>Science</h3>
+                <div class="chapter-item"><p>Chapter 1: Matter in Our Surroundings</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 2: Is Matter Around Us Pure</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 3: Atoms and Molecules</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 4: Structure of the Atom</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 5: The Fundamental Unit of Life</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 6: Tissues</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 7: Diversity in Living Organisms</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 8: Motion</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 9: Force and Laws of Motion</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 10: Gravitation</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 11: Work and Energy</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 12: Sound</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 13: Why Do We Fall Ill</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 14: Natural Resources</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 15: Improvement in Food Resources</p><a href="#" target="_blank">Notes (PDF)</a></div>
+            </div>
+            <div class="subject-container" data-aos="fade-up" data-aos-delay="100">
+                <h3>Social Science</h3>
+                <div class="chapter-item"><p>Geography - Chapter 1: India - Size and Location</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Geography - Chapter 2: Physical Features of India</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Geography - Chapter 3: Drainage</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Geography - Chapter 4: Climate</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Geography - Chapter 5: Natural Vegetation and Wildlife</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Geography - Chapter 6: Population</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>History - Chapter 1: The French Revolution</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>History - Chapter 2: Socialism in Europe and the Russian Revolution</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>History - Chapter 3: Nazism and the Rise of Hitler</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>History - Chapter 4: Forest Society and Colonialism</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>History - Chapter 5: Pastoralists in the Modern World</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Civics - Chapter 1: What is Democracy? Why Democracy?</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Civics - Chapter 2: Constitutional Design</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Civics - Chapter 3: Electoral Politics</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Civics - Chapter 4: Working of Institutions</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Civics - Chapter 5: Democratic Rights</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Economics - Chapter 1: The Story of Village Palampur</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Economics - Chapter 2: People as Resource</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Economics - Chapter 3: Poverty as a Challenge</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Economics - Chapter 4: Food Security in India</p><a href="#" target="_blank">Notes (PDF)</a></div>
+            </div>
+            <div class="subject-container" data-aos="fade-up" data-aos-delay="200">
+                <h3>Maths</h3>
+                <div class="chapter-item"><p>Chapter 1: Number Systems</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 2: Polynomials</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 3: Coordinate Geometry</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 4: Linear Equations in Two Variables</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 5: Introduction to Euclid's Geometry</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 6: Lines and Angles</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 7: Triangles</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 8: Quadrilaterals</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 9: Areas of Parallelograms and Triangles</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 10: Circles</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 11: Constructions</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 12: Heron's Formula</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 13: Surface Areas and Volumes</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 14: Statistics</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 15: Probability</p><a href="#" target="_blank">Notes (PDF)</a></div>
+            </div>
+            <div class="subject-container" data-aos="fade-up" data-aos-delay="300">
+                <h3>Hindi Course B</h3>
+                <div class="chapter-item"><p>Chapter 1: दो बैलों की कथा</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 2: ल्हासा की ओर</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 3: उपभोक्तावाद की संस्कृति</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 4: साँवले सपनों की याद</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 5: नाना साहब की पुत्री देवी मैना को भस्म कर दिया गया</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 6: प्रेमचंद के फटे जूते</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 7: मेरे बचपन के दिन</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 8: एक कुत्ता और एक मैना</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem 1: साखियाँ एवं सबद</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem 2: वाख</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem 3: सवैये</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem 4: कैदी और कोकिला</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem 5: ग्राम श्री</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem 6: चंद्र गहना से लौटती बेर</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem 7: मेघ आए</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem 8: यमराज की दिशा</p><a href="#" target="_blank">Notes (PDF)</a></div>
+            </div>
+            <div class="subject-container" data-aos="fade-up" data-aos-delay="400">
+                <h3>Hindi Course A</h3>
+                <div class="chapter-item"><p>Prose - Chapter 1: गद्य खंड - सूरदास</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose - Chapter 2: हरिहर काका</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose - Chapter 3: सपनों के-से दिन</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose - Chapter 4: मेरा छोटा-सा निजी पुस्तकालय</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose - Chapter 5: हामिद खाँ</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose - Chapter 6: दुख का अधिकार</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose - Chapter 7: एवरेस्ट: मेरी शिखर यात्रा</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose - Chapter 8: तुम कब जाओगे, अतिथि</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem - Chapter 1: रैदास</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem - Chapter 2: रहीम</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem - Chapter 3: नये इलाके में</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem - Chapter 4: खुशबू रचते हैं हाथ</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem - Chapter 5: आल्हा - खण्ड</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem - Chapter 6: आदमी नामा</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem - Chapter 7: एक फूल की चाह</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem - Chapter 8: गीत अगीत</p><a href="#" target="_blank">Notes (PDF)</a></div>
+            </div>
+            <div class="subject-container" data-aos="fade-up" data-aos-delay="500">
+                <h3>Communicative Eng (A)</h3>
+                <div class="chapter-item"><p>Chapter 1: People</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 2: Adventure</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 3: Environment</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 4: The Class IX Radio and Video Show</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 5: Mystery</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 6: Children</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 7: Sports and Games</p><a href="#" target="_blank">Notes (PDF)</a></div>
+            </div>
+            <div class="subject-container" data-aos="fade-up" data-aos-delay="600">
+                <h3>Eng Lang & Lit (B)</h3>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 1: The Fun They Had</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 2: The Sound of Music</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 3: The Little Girl</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 4: A Truly Beautiful Mind</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 5: The Snake and the Mirror</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 6: My Childhood</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 7: Packing</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 8: Reach for the Top</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 9: The Bond of Love</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 10: Kathmandu</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Prose (Beehive) - Chapter 11: If I Were You</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem (Beehive) - Chapter 1: The Road Not Taken</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem (Beehive) - Chapter 2: Wind</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem (Beehive) - Chapter 3: Rain on the Roof</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem (Beehive) - Chapter 4: The Lake Isle of Innisfree</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem (Beehive) - Chapter 5: A Legend of the Northland</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem (Beehive) - Chapter 6: No Men Are Foreign</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem (Beehive) - Chapter 7: The Duck and the Kangaroo</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem (Beehive) - Chapter 8: On Killing a Tree</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem (Beehive) - Chapter 9: The Snake Trying</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Poem (Beehive) - Chapter 10: A Slumber Did My Spirit Seal</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Supplementary (Moments) - Chapter 1: The Lost Child</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Supplementary (Moments) - Chapter 2: The Adventures of Toto</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Supplementary (Moments) - Chapter 3: Iswaran the Storyteller</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Supplementary (Moments) - Chapter 4: In the Kingdom of Fools</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Supplementary (Moments) - Chapter 5: The Happy Prince</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Supplementary (Moments) - Chapter 6: Weathering the Storm in Ersama</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Supplementary (Moments) - Chapter 7: The Last Leaf</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Supplementary (Moments) - Chapter 8: A House is Not a Home</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Supplementary (Moments) - Chapter 9: The Accidental Tourist</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Supplementary (Moments) - Chapter 10: The Beggar</p><a href="#" target="_blank">Notes (PDF)</a></div>
+            </div>
+            <div class="subject-container" data-aos="fade-up" data-aos-delay="700">
+                <h3>Artificial Intelligence</h3>
+                <div class="chapter-item"><p>Chapter 1: Introduction to AI</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 2: AI Project Cycle</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 3: Neural Networks</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 4: Introduction to Python</p><a href="#" target="_blank">Notes (PDF)</a></div>
+            </div>
+            <div class="subject-container" data-aos="fade-up" data-aos-delay="800">
+                <h3>Information Technology</h3>
+                <div class="chapter-item"><p>Chapter 1: Introduction to IT and ITes Industry</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 2: Data Entry and Keyboarding Skills</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 3: Digital Documentation</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 4: Electronic Spreadsheet</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 5: Digital Presentation</p><a href="#" target="_blank">Notes (PDF)</a></div>
+            </div>
+            <div class="subject-container" data-aos="fade-up" data-aos-delay="900">
+                <h3>Sanskrit</h3>
+                <div class="chapter-item"><p>Chapter 1: भारतीवसन्तगीतिः</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 2: स्वर्णकाकः</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 3: गोदोहनम्</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 4: सूक्तिमौक्तिकम्</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 5: भ्रान्तो बालः</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 6: प्रत्यभिज्ञानम्</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 7: लौहतुला</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 8: सिकतासेतुः</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 9: जटायोः शौर्यम्</p><a href="#" target="_blank">Notes (PDF)</a></div>
+                <div class="chapter-item"><p>Chapter 10: पर्यावरणम्</p><a href="#" target="_blank">Notes (PDF)</a></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resources" class="notes-dpp" data-aos="fade-right">
+        <h2 data-aos="fade-left">Notes & DPP</h2>
+        <div id="notesDppContainer" class="subject-resources"></div>
+    </section>
+
+    <section class="links" data-aos="zoom-in">
+        <h2 data-aos="fade-up">Connect with Us</h2>
+        <p><a href="https://youtube.com/@neev_2026" target="_blank" data-aos="fade-up" data-aos-delay="100">YouTube Channel</a></p>
+        <p><a href="https://t.me/neev_2027" target="_blank" data-aos="fade-up" data-aos-delay="200">Telegram: Class 9 NEEV Batch (Free) | Physics Wallah</a></p>
+        <p><a href="https://www.instagram.com/murlikumar_51?igsh=MWN1eXByYWFlaGdqNg==" target="_blank" data-aos="fade-up" data-aos-delay="300">Follow on Instagram</a></p>
+    </section>
+
+    <footer data-aos="fade-up">
+        <p>Web Developed by Murli Kumar | Contact: <a href="mailto:murlikumar097@gmail.com">murlikumar097@gmail.com</a></p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 50
+        });
+
+        // Mobile Navigation Toggle
+        function toggleNav() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Admin Login Modal
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const adminId = document.getElementById('adminId').value;
+            const adminPassword = document.getElementById('adminPassword').value;
+
+            if (adminId === 'MurliKumar' && adminPassword === 'Next Topper Best') {
+                document.getElementById('controlPanel').style.display = 'block';
+                document.getElementById('batchManager').scrollIntoView({ behavior: 'smooth' });
+                closeLoginModal();
+            } else {
+                alert('Incorrect Admin ID or Password');
+            }
+        });
+
+        // Batch Management
+        document.getElementById('batchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const batchName = document.getElementById('batchName').value;
+            const batchYear = document.getElementById('batchYear').value;
+
+            const batchList = document.getElementById('batchList');
+            const batchItem = document.createElement('div');
+            batchItem.classList.add('batch-item');
+            batchItem.innerHTML = `<p>Batch: ${batchName} (${batchYear})</p>`;
+            batchList.appendChild(batchItem);
+
+            document.getElementById('batchForm').reset();
+        });
+
+        // Lecture Upload (Admin Only)
+        document.getElementById('lectureForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const lectureTitle = document.getElementById('lectureTitle').value;
+            const chapterName = document.getElementById('chapterName').value;
+            const subject = document.getElementById('subject').value;
+            const lectureFile = document.getElementById('lectureFile').files[0];
+
+            if (lectureFile) {
+                const fileURL = URL.createObjectURL(lectureFile);
+                const lecture = {
+                    title: lectureTitle,
+                    chapter: chapterName,
+                    subject: subject,
+                    fileURL: fileURL,
+                    fileType: lectureFile.type,
+                    date: new Date().toLocaleString()
+                };
+
+                let lectures = JSON.parse(localStorage.getItem('lectures')) || [];
+                lectures.push(lecture);
+                localStorage.setItem('lectures', JSON.stringify(lectures));
+
+                document.getElementById('lectureForm').reset();
+                displaySubjects();
+            }
+        });
+
+        // Chapters Data
+        const chaptersData = {
+            "Science": [
+                "Chapter 1: Matter in Our Surroundings",
+                "Chapter 2: Is Matter Around Us Pure",
+                "Chapter 3: Atoms and Molecules",
+                "Chapter 4: Structure of the Atom",
+                "Chapter 5: The Fundamental Unit of Life",
+                "Chapter 6: Tissues",
+                "Chapter 7: Diversity in Living Organisms",
+                "Chapter 8: Motion",
+                "Chapter 9: Force and Laws of Motion",
+                "Chapter 10: Gravitation",
+                "Chapter 11: Work and Energy",
+                "Chapter 12: Sound",
+                "Chapter 13: Why Do We Fall Ill",
+                "Chapter 14: Natural Resources",
+                "Chapter 15: Improvement in Food Resources"
+            ],
+            "Social Science": [
+                "Geography - Chapter 1: India - Size and Location",
+                "Geography - Chapter 2: Physical Features of India",
+                "Geography - Chapter 3: Drainage",
+                "Geography - Chapter 4: Climate",
+                "Geography - Chapter 5: Natural Vegetation and Wildlife",
+                "Geography - Chapter 6: Population",
+                "History - Chapter 1: The French Revolution",
+                "History - Chapter 2: Socialism in Europe and the Russian Revolution",
+                "History - Chapter 3: Nazism and the Rise of Hitler",
+                "History - Chapter 4: Forest Society and Colonialism",
+                "History - Chapter 5: Pastoralists in the Modern World",
+                "Civics - Chapter 1: What is Democracy? Why Democracy?",
+                "Civics - Chapter 2: Constitutional Design",
+                "Civics - Chapter 3: Electoral Politics",
+                "Civics - Chapter 4: Working of Institutions",
+                "Civics - Chapter 5: Democratic Rights",
+                "Economics - Chapter 1: The Story of Village Palampur",
+                "Economics - Chapter 2: People as Resource",
+                "Economics - Chapter 3: Poverty as a Challenge",
+                "Economics - Chapter 4: Food Security in India"
+            ],
+            "Maths": [
+                "Chapter 1: Number Systems",
+                "Chapter 2: Polynomials",
+                "Chapter 3: Coordinate Geometry",
+                "Chapter 4: Linear Equations in Two Variables",
+                "Chapter 5: Introduction to Euclid's Geometry",
+                "Chapter 6: Lines and Angles",
+                "Chapter 7: Triangles",
+                "Chapter 8: Quadrilaterals",
+                "Chapter 9: Areas of Parallelograms and Triangles",
+                "Chapter 10: Circles",
+                "Chapter 11: Constructions",
+                "Chapter 12: Heron's Formula",
+                "Chapter 13: Surface Areas and Volumes",
+                "Chapter 14: Statistics",
+                "Chapter 15: Probability"
+            ],
+            "Hindi Course B": [
+                "Chapter 1: दो बैलों की कथा",
+                "Chapter 2: ल्हासा की ओर",
+                "Chapter 3: उपभोक्तावाद की संस्कृति",
+                "Chapter 4: साँवले सपनों की याद",
+                "Chapter 5: नाना साहब की पुत्री देवी मैना को भस्म कर दिया गया",
+                "Chapter 6: प्रेमचंद के फटे जूते",
+                "Chapter 7: मेरे बचपन के दिन",
+                "Chapter 8: एक कुत्ता और एक मैना",
+                "Poem 1: साखियाँ एवं सबद",
+                "Poem 2: वाख",
+                "Poem 3: सवैये",
+                "Poem 4: कैदी और कोकिला",
+                "Poem 5: ग्राम श्री",
+                "Poem 6: चंद्र गहना से लौटती बेर",
+                "Poem 7: मेघ आए",
+                "Poem 8: यमराज की दिशा"
+            ],
+            "Hindi Course A": [
+                "Prose - Chapter 1: गद्य खंड - सूरदास",
+                "Prose - Chapter 2: हरिहर काका",
+                "Prose - Chapter 3: सपनों के-से दिन",
+                "Prose - Chapter 4: मेरा छोटा-सा निजी पुस्तकालय",
+                "Prose - Chapter 5: हामिद खाँ",
+                "Prose - Chapter 6: दुख का अधिकार",
+                "Prose - Chapter 7: एवरेस्ट: मेरी शिखर यात्रा",
+                "Prose - Chapter 8: तुम कब जाओगे, अतिथि",
+                "Poem - Chapter 1: रैदास",
+                "Poem - Chapter 2: रहीम",
+                "Poem - Chapter 3: नये इलाके में",
+                "Poem - Chapter 4: खुशबू रचते हैं हाथ",
+                "Poem - Chapter 5: आल्हा - खण्ड",
+                "Poem - Chapter 6: आदमी नामा",
+                "Poem - Chapter 7: एक फूल की चाह",
+                "Poem - Chapter 8: गीत अगीत"
+            ],
+            "Communicative Eng (A)": [
+                "Chapter 1: People",
+                "Chapter 2: Adventure",
+                "Chapter 3: Environment",
+                "Chapter 4: The Class IX Radio and Video Show",
+                "Chapter 5: Mystery",
+                "Chapter 6: Children",
+                "Chapter 7: Sports and Games"
+            ],
+            "Eng Lang & Lit (B)": [
+                "Prose (Beehive) - Chapter 1: The Fun They Had",
+                "Prose (Beehive) - Chapter 2: The Sound of Music",
+                "Prose (Beehive) - Chapter 3: The Little Girl",
+                "Prose (Beehive) - Chapter 4: A Truly Beautiful Mind",
+                "Prose (Beehive) - Chapter 5: The Snake and the Mirror",
+                "Prose (Beehive) - Chapter 6: My Childhood",
+                "Prose (Beehive) - Chapter 7: Packing",
+                "Prose (Beehive) - Chapter 8: Reach for the Top",
+                "Prose (Beehive) - Chapter 9: The Bond of Love",
+                "Prose (Beehive) - Chapter 10: Kathmandu",
+                "Prose (Beehive) - Chapter 11: If I Were You",
+                "Poem (Beehive) - Chapter 1: The Road Not Taken",
+                "Poem (Beehive) - Chapter 2: Wind",
+                "Poem (Beehive) - Chapter 3: Rain on the Roof",
+                "Poem (Beehive) - Chapter 4: The Lake Isle of Innisfree",
+                "Poem (Beehive) - Chapter 5: A Legend of the Northland",
+                "Poem (Beehive) - Chapter 6: No Men Are Foreign",
+                "Poem (Beehive) - Chapter 7: The Duck and the Kangaroo",
+                "Poem (Beehive) - Chapter 8: On Killing a Tree",
+                "Poem (Beehive) - Chapter 9: The Snake Trying",
+                "Poem (Beehive) - Chapter 10: A Slumber Did My Spirit Seal",
+                "Supplementary (Moments) - Chapter 1: The Lost Child",
+                "Supplementary (Moments) - Chapter 2: The Adventures of Toto",
+                "Supplementary (Moments) - Chapter 3: Iswaran the Storyteller",
+                "Supplementary (Moments) - Chapter 4: In the Kingdom of Fools",
+                "Supplementary (Moments) - Chapter 5: The Happy Prince",
+                "Supplementary (Moments) - Chapter 6: Weathering the Storm in Ersama",
+                "Supplementary (Moments) - Chapter 7: The Last Leaf",
+                "Supplementary (Moments) - Chapter 8: A House is Not a Home",
+                "Supplementary (Moments) - Chapter 9: The Accidental Tourist",
+                "Supplementary (Moments) - Chapter 10: The Beggar"
+            ],
+            "Artificial Intelligence": [
+                "Chapter 1: Introduction to AI",
+                "Chapter 2: AI Project Cycle",
+                "Chapter 3: Neural Networks",
+                "Chapter 4: Introduction to Python"
+            ],
+            "Information Technology": [
+                "Chapter 1: Introduction to IT and ITes Industry",
+                "Chapter 2: Data Entry and Keyboarding Skills",
+                "Chapter 3: Digital Documentation",
+                "Chapter 4: Electronic Spreadsheet",
+                "Chapter 5: Digital Presentation"
+            ],
+            "Sanskrit": [
+                "Chapter 1: भारतीवसन्तगीतिः",
+                "Chapter 2: स्वर्णकाकः",
+                "Chapter 3: गोदोहनम्",
+                "Chapter 4: सूक्तिमौक्तिकम्",
+                "Chapter 5: भ्रान्तो बालः",
+                "Chapter 6: प्रत्यभिज्ञानम्",
+                "Chapter 7: लौहतुला",
+                "Chapter 8: सिकतासेतुः",
+                "Chapter 9: जटायोः शौर्यम्",
+                "Chapter 10: पर्यावरणम्"
+            ]
+        };
+
+        // Pre-populate 10 Lectures for Science - Chapter 1: Matter in Our Surroundings
+        function prePopulateLectures() {
+            let lectures = JSON.parse(localStorage.getItem('lectures')) || [];
+            const chapterLecturesExist = lectures.some(lecture => 
+                lecture.subject === "Science" && lecture.chapter === "Chapter 1: Matter in Our Surroundings"
+            );
+
+            if (!chapterLecturesExist) {
+                const mockLectures = [
+                    { title: "Introduction to Matter", chapter: "Chapter 1: Matter in Our Surroundings", subject: "Science", fileURL: "#", fileType: "video/mp4", date: "06/13/2025, 11:22 AM" },
+                    { title: "States of Matter - Part 1", chapter: "Chapter 1: Matter in Our Surroundings", subject: "Science", fileURL: "#", fileType: "video/mp4", date: "06/13/2025, 11:22 AM" },
+                    { title: "States of Matter - Part 2", chapter: "Chapter 1: Matter in Our Surroundings", subject: "Science", fileURL: "#", fileType: "video/mp4", date: "06/13/2025, 11:22 AM" },
+                    { title: "Properties of Matter", chapter: "Chapter 1: Matter in Our Surroundings", subject: "Science", fileURL: "#", fileType: "application/pdf", date: "06/13/2025, 11:22 AM" },
+                    { title: "Diffusion Explained", chapter: "Chapter 1: Matter in Our Surroundings", subject: "Science", fileURL: "#", fileType: "video/mp4", date: "06/13/2025, 11:22 AM" },
+                    { title: "Change of State - Part 1", chapter: "Chapter 1: Matter in Our Surroundings", subject: "Science", fileURL: "#", fileType: "video/mp4", date: "06/13/2025, 11:22 AM" },
+                    { title: "Change of State - Part 2", chapter: "Chapter 1: Matter in Our Surroundings", subject: "Science", fileURL: "#", fileType: "video/mp4", date: "06/13/2025, 11:22 AM" },
+                    { title: "Latent Heat Concept", chapter: "Chapter 1: Matter in Our Surroundings", subject: "Science", fileURL: "#", fileType: "application/pdf", date: "06/13/2025, 11:22 AM" },
+                    { title: "Evaporation and Cooling", chapter: "Chapter 1: Matter in Our Surroundings", subject: "Science", fileURL: "#", fileType: "video/mp4", date: "06/13/2025, 11:22 AM" },
+                    { title: "Summary and Key Points", chapter: "Chapter 1: Matter in Our Surroundings", subject: "Science", fileURL: "#", fileType: "application/pdf", date: "06/13/2025, 11:22 AM" }
+                ];
+
+                lectures = lectures.concat(mockLectures);
+                localStorage.setItem('lectures', JSON.stringify(lectures));
+            }
+        }
+
+        // Display Subjects
+        function displaySubjects() {
+            const lecturesContainer = document.getElementById('lecturesContainer');
+            lecturesContainer.innerHTML = '';
+
+            const subjects = Object.keys(chaptersData);
+            subjects.forEach((subject, index) => {
+                const subjectItem = document.createElement('div');
+                subjectItem.classList.add('subject-item');
+                subjectItem.innerHTML = `<h3>${subject}</h3>`;
+                subjectItem.setAttribute('data-aos', 'fade-up');
+                subjectItem.setAttribute('data-aos-delay', index * 100);
+                subjectItem.addEventListener('click', () => displayChapters(subject));
+                lecturesContainer.appendChild(subjectItem);
+            });
+        }
+
+        // Display Chapters for a Subject
+        function displayChapters(subject) {
+            const chaptersContainer = document.getElementById('chaptersContainer');
+            chaptersContainer.innerHTML = '';
+
+            const chapters = chaptersData[subject];
+            chapters.forEach((chapter, index) => {
+                const chapterContainer = document.createElement('div');
+                chapterContainer.classList.add('chapter-container');
+                chapterContainer.innerHTML = `<h4>${chapter}</h4>`;
+                chapterContainer.setAttribute('data-aos', 'fade-up');
+                chapterContainer.setAttribute('data-aos-delay', index * 50);
+                chapterContainer.addEventListener('click', () => displayChapterDetails(subject, chapter));
+                chaptersContainer.appendChild(chapterContainer);
+            });
+
+            chaptersContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Display Chapter Details (Lectures, Notes, DPP)
+        function displayChapterDetails(subject, chapter) {
+            const chaptersContainer = document.getElementById('chaptersContainer');
+            const existingDetails = document.querySelector('.chapter-details');
+            if (existingDetails) existingDetails.remove();
+
+            const chapterDetails = document.createElement('div');
+            chapterDetails.classList.add('chapter-details');
+            chapterDetails.setAttribute('data-aos', 'fade-up');
+            chapterDetails.innerHTML = `<h4>${chapter} - ${subject}</h4>`;
+
+            // Display Lectures
+            const lectures = JSON.parse(localStorage.getItem('lectures')) || [];
+            const chapterLectures = lectures.filter(lecture => lecture.subject === subject && lecture.chapter === chapter);
+            if (chapterLectures.length > 0) {
+                chapterLectures.forEach((lecture, index) => {
+                    const lectureDiv = document.createElement('div');
+                    lectureDiv.setAttribute('data-aos', 'fade-up');
+                    lectureDiv.setAttribute('data-aos-delay', index * 50);
+                    lectureDiv.innerHTML = `
+                        <p>Lecture: ${lecture.title} (Uploaded on: ${lecture.date})</p>
+                        <a href="${lecture.fileURL}" target="_blank">${lecture.fileType.includes('video') ? 'Watch Video' : 'View PDF'}</a>
+                    `;
+                    chapterDetails.appendChild(lectureDiv);
+                });
+            } else {
+                chapterDetails.innerHTML += `<p>No lectures available for this chapter.</p>`;
+            }
+
+            // Display Notes and DPP (Mock Links)
+            const notesDiv = document.createElement('div');
+            notesDiv.setAttribute('data-aos', 'fade-up');
+            notesDiv.setAttribute('data-aos-delay', '100');
+            notesDiv.innerHTML = `<p>Notes: <a href="#" target="_blank">Download Notes (PDF)</a></p>`;
+            chapterDetails.appendChild(notesDiv);
+
+            const dppDiv = document.createElement('div');
+            dppDiv.setAttribute('data-aos', 'fade-up');
+            dppDiv.setAttribute('data-aos-delay', '150');
+            dppDiv.innerHTML = `<p>DPP: <a href="#" target="_blank">Download DPP (PDF)</a></p>`;
+            chapterDetails.appendChild(dppDiv);
+
+            chaptersContainer.appendChild(chapterDetails);
+        }
+
+        // Notes and DPP
+        function displayNotesAndDPP() {
+            const notesDppContainer = document.getElementById('notesDppContainer');
+            notesDppContainer.innerHTML = '';
+
+            const subjects = [
+                "Science", "Social Science", "Maths", "Hindi Course B", "Hindi Course A",
+                "Communicative Eng (A)", "Eng Lang & Lit (B)", "Artificial Intelligence",
+                "Information Technology", "Sanskrit"
+            ];
+
+            subjects.forEach((subject, index) => {
+                const subjectContainer = document.createElement('div');
+                subjectContainer.classList.add('subject-container');
+                subjectContainer.setAttribute('data-aos', 'fade-up');
+                subjectContainer.setAttribute('data-aos-delay', index * 100);
+
+                subjectContainer.innerHTML = `
+                    <h3>${subject}</h3>
+                    <div class="resource-item">
+                        <p>Notes</p>
+                        <a href="#" target="_blank">Download Notes (PDF)</a>
+                    </div>
+                    <div class="resource-item">
+                        <p>Daily Practice Problems (DPP)</p>
+                        <a href="#" target="_blank">Download DPP (PDF)</a>
+                    </div>
+                `;
+
+                notesDppContainer.appendChild(subjectContainer);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            prePopulateLectures();
+            displaySubjects();
+            displayNotesAndDPP();
+        });
+    </script>
+</body>
+</html>
